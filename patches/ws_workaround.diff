@@ -1,0 +1,17 @@
+diff --git a/components/esp_http_server/src/httpd_uri.c b/components/esp_http_server/src/httpd_uri.c
+index 44d173f6cc..01d8a32a61 100644
+--- a/components/esp_http_server/src/httpd_uri.c
++++ b/components/esp_http_server/src/httpd_uri.c
+@@ -312,6 +312,12 @@ esp_err_t httpd_uri(struct httpd_data *hd)
+ #ifdef CONFIG_HTTPD_WS_SUPPORT
+     struct httpd_req_aux   *aux = req->aux;
+     if (uri->is_websocket && aux->ws_handshake_detect && uri->method == HTTP_GET) {
++        /* Invoke handler */
++        if (uri->handler(req) != ESP_OK) {
++          /* Handler returns error, this socket should be closed */
++          ESP_LOGW(TAG, LOG_FMT("uri handler execution failed"));
++          return ESP_FAIL;
++        }
+         ESP_LOGD(TAG, LOG_FMT("Responding WS handshake to sock %d"), aux->sd->fd);
+         esp_err_t ret = httpd_ws_respond_server_handshake(&hd->hd_req, uri->supported_subprotocol);
+         if (ret != ESP_OK) {

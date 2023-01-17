@@ -21,7 +21,7 @@ pub const V_4_3_2_PATCHES: &[&str] = &[
 ];
 
 #[allow(dead_code)]
-pub const MASTER_PATCHES: &[&str] = &[];
+pub const MASTER_PATCHES: &[&str] = &["patches/ws_workaround.diff"];
 
 #[allow(dead_code)]
 pub const V_5_0_PATCHES: &[&str] = &["patches/esp_app_format_weak_v5.0.diff"];
